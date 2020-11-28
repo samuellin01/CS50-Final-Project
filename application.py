@@ -18,6 +18,8 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 def index():
     return render_template("layout.html");
 
+#testing git commit
+
 #layout deadline: 11/27 end of day
 
 #pages for different constellations (redirected from homepage) 11/28 (both work on it)
