@@ -1,3 +1,13 @@
+
+.jumbotron {
+    background-color: #070b34;
+    margin-left: 140px;
+    padding: 15px;
+    text-align: center;
+    color: white;
+}
+
+
 .sidenav {
     background-color: #375a7f;
     height: 100%;
