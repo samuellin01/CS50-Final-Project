@@ -29,3 +29,5 @@ To run Flask on your local IDE:
 2) Run `export FLASK_ENV=development`
 3) Run `flask run`
 If it works, the IDE will provide you with a local IP address, which you can copy/paste into your browser.
+
+Note: Sometimes, because of cache, the IDE will automatically run an older version of the flask application, so some changes may not be reflected. To avoid this, use Incognito Mode.
