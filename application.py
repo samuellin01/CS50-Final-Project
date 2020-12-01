@@ -37,7 +37,7 @@ db = SQL("sqlite:///skymap.db")
 @app.route("/")
 @login_required
 def index():
-    return render_template("layout.html")
+    return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -68,7 +68,8 @@ def login():
         session["user_id"] = rows[0]["id"]
 
         # Redirect user to home page
-        return redirect("/")
+        # return redirect("/")
+        return render_template("index.html")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -83,7 +84,8 @@ def logout():
     session.clear()
 
     # Redirect user to login form
-    return redirect("/")
+    # return redirect("/")
+    return render_template("login.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

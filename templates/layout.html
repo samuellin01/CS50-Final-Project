@@ -36,15 +36,12 @@
         </div>
 
         <div class="sidenav">
-            {% if session.user_id %}
-                <h1>Menu</h1>
-                <a class="nav-item" href="#">Home</a>
-                <a class="nav-item" href="#">???</a>
-                <a class="nav-item" href="/logout">Sign Out</a>
-            {% else %}
-                <a class="nav-item" href="/login">Sign In</a>
-                <a class="nav-item" href="/register">Register</a>
-            {% endif %}
+            <h1>Menu</h1>
+            <a class="nav-item" href="/">Home</a>
+            <a class="nav-item" href="#">???</a>
+            <a class="nav-item" href="/login">Sign In</a>
+            <a class="nav-item" href="/logout">Sign Out</a>
+            <a class="nav-item" href="/register">Register</a>
         </div>
 
         {% if get_flashed_messages() %}
