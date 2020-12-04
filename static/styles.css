@@ -7,6 +7,9 @@
     color: white;
 }
 
+form, footer {
+    padding-left: 20%;
+}
 
 .sidenav {
     background-color: #375a7f;

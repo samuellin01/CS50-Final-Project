@@ -19,10 +19,7 @@ To commit changes to the repository:
 5) Run `git push`
 6) Go to github online and check if it actually worked.
 
-Before running Flask on your local IDE (such as VSCode):
-1) If it says `ModuleNotFoundError: No module named 'cs50'`, run `pip install cs50` or `pip3 install cs50`
-2) If it says `ModuleNotFoundError: No module named 'flask_session'`, run `pip install Flask-Session`
-3) Also, pip install any other APIs that we end up using
+If it says `ModuleNotFoundError: No module named ...`, run `pip install -r requirements.txt`
 
 To run Flask on your local IDE:
 1) Run `export FLASK_APP=application`

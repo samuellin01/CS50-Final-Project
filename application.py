@@ -1,4 +1,5 @@
 import os
+import calendar
 import datetime
  
 from cs50 import SQL
@@ -7,8 +8,10 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
+from time import strptime
 
-from helpers import apology, login_required
+from helpers import apology, login_required, locator
+from iso3166 import countries
 
 # Configure application
 app = Flask(__name__)
@@ -126,6 +129,40 @@ def register():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
+
+@app.route("/timeplace", methods=["GET", "POST"])
+def timeplace():
+    months = []
+    nations = []
+    message = ""
+    for i in range(1, 13):
+        months.append(datetime.date(2020, i, 1).strftime('%B'))
+    for c in countries:
+        nations.append(c.name)
+    if request.method == "GET":
+        return render_template("timeplace.html", message=message, months=months, nations=nations, present_month=datetime.datetime.now().strftime('%B'), present_day=int(datetime.datetime.now().strftime('%d')), present_year=datetime.datetime.now().strftime('%Y'), present_hour=datetime.datetime.now().strftime('%H'), present_minute=datetime.datetime.now().strftime('%M'))
+    else:
+        address = request.form.get("zipcode")
+        nation = request.form.get("country")
+        month = strptime(request.form.get("month")[0:3], '%b').tm_mon
+        day = int(request.form.get("day"))
+        year = int(request.form.get("year"))
+        hour = request.form.get("hour")
+        minute = request.form.get("minute")
+        try:
+            date = datetime.date(year=2020, month=11, day=31)
+        except ValueError:
+            message = "Invalid Date"
+        if locator(address, nation) == None:
+            message = "Invalid/Missing Location"
+        elif year < 2000:
+            message = "Date must be after January 1, 2000"
+        elif year > 2040:
+            message = "Date must be before December 31st, 2039"
+        else:
+            return locator(address, nation)
+        return render_template("timeplace.html", message=message, months=months, nations=nations, present_month=datetime.datetime.now().strftime('%B'), present_day=int(datetime.datetime.now().strftime('%d')), present_year=datetime.datetime.now().strftime('%Y'), present_hour=datetime.datetime.now().strftime('%H'), present_minute=datetime.datetime.now().strftime('%M'))
+
 
 #testing git commit
 
