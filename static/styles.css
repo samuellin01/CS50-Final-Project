@@ -1,14 +1,36 @@
+body {
+    background-color: #000000;
+}
+
+p, label {
+    color: white;
+}
+
+#skymap-label {
+    text-align: right;
+    color: white;
+}
 
 .jumbotron {
     background-color: #070b34;
     margin-left: 140px;
     padding: 15px;
+    width: 100%;
     text-align: center;
     color: white;
 }
 
+.skymap {
+    max-width:100%;
+    max-height:100%;
+}
+
 form, footer {
     padding-left: 20%;
+}
+
+.text-muted {
+    color: white!important;
 }
 
 .sidenav {
@@ -23,7 +45,7 @@ form, footer {
     padding-top: 20px;
 }
 
-.sidenav a, h1 {
+.sidenav a, h1, #skymap-label {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     display: block;

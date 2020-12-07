@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Sky Map
+{% endblock %}
+
+{% block main %}
+    <div>
+        <p id="skymap-label">Latitude: {{ lat }} °
+            <br>Longitude: {{ lon }} °
+            <br>Zip Code: {{ zipcode }}
+            <br>Country: {{ country }}
+            <br>Time: {{ time }}
+        </p>
+    </div>
+    </div>
+        <img class="skymap" src="/skymap.png" alt="my plot">
+    </div>
+{% endblock %}

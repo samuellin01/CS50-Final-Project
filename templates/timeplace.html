@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Sky Map
+Sky Map Form
 {% endblock %}
 
 {% block main %}
@@ -74,7 +74,7 @@ Sky Map
         </div>
         <div class="form-group col-md-3">
             <label for="day">Minute</label>
-            <select class="form-control" name="day">
+            <select class="form-control" name="minute">
                 {% for num in range(60) %}
                     {% if '%02d' % num  == present_minute %}
                         <option selected>{{ present_minute }}</option>

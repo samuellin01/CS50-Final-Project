@@ -4,3 +4,10 @@ Flask-Session
 requests
 iso3166
 geopy
+numpy
+matplotlib
+astropy
+ephem
+pyorbital
+geopy
+skyfield
