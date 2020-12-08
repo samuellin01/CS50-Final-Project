@@ -43,7 +43,7 @@ form, footer, .cat{
     padding-top: 20%;
 }
 
-.text-muted {
+.text-muted, .username-label {
     color: white!important;
 }
 

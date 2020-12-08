@@ -1,5 +1,4 @@
 import os
-# import requests (will use with api later)
 import urllib.parse
 import sqlite3
 import matplotlib.pyplot as plt

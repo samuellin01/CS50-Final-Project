@@ -39,9 +39,9 @@
             <h1>Menu</h1>
             <a class="nav-item" href="/">Home</a>
             <a class="nav-item" href="/timeplace">Sky Map</a>
-            {% if session.user_id %}
+            {% if session["user_id"] %}
                 <a class="nav-item" href="/logout">Sign Out</a>
-                <a class="nav-item">{{ session.user_id }}</a>>
+                <a class="nav-item username-label">Signed in as {{ session["username"] }}</a>>
             {% else %}
                 <a class="nav-item" href="/login">Sign In</a>
                 <a class="nav-item" href="/register">Register</a>

@@ -45,10 +45,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
-# Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///skymap.db")
-skymap_db = sqlite3.connect("skymap.db", check_same_thread=False)
-cur1 = skymap_db.cursor()
+# Configure sqlite3 to use SQL
+userdata_db = sqlite3.connect("userdata.db", check_same_thread=False)
+cur1 = userdata_db.cursor()
 
 @app.route("/")
 @login_required
@@ -61,35 +60,37 @@ def login():
 
     # Forget any user_id
     session.clear()
-
+    message = ""
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 400)
-
+            message = "Missing username"
+            return render_template("login.html", message=message)
+        
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return apology("must provide password", 400)
+            message = "Missing password"
+            return render_template("login.html", message=message)
 
         # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
-
+        cur1.execute("SELECT * FROM users WHERE username = ?", (request.form.get("username"),))
+        matches = cur1.fetchall()
         # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return apology("invalid username and/or password", 400)
-
+        if len(matches) != 1 or not check_password_hash(matches[0][2], request.form.get("password")):
+            message = "Invalid username and/or password"
+            return render_template("login.html", message=message)
+        
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
-
+        session["user_id"] = matches[0][0]
+        session["username"] = matches[0][1]
         # Redirect user to home page
         # return redirect("/")
         return redirect("/timeplace")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("login.html")
+        return render_template("login.html", message=message)
 
 
 @app.route("/logout")
@@ -101,47 +102,54 @@ def logout():
 
     # Redirect user to login form
     # return redirect("/")
-    return render_template("login.html")
+    return render_template("login.html", message="")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
     # Forget any user_id
     session.clear()
-
+    message = ""
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 400)
+            message = "Must provide username"
+            return render_template("register.html", message=message)
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return apology("must provide password", 400)
+            message = "Must provide password"
+            return render_template("register.html", message=message)
 
         # Ensures both passwords match
         elif request.form.get("password") != request.form.get("confirmation"):
-            return apology("passwords don't match", 400)
+            message = "Passwords don't match"
+            return render_template("register.html", message=message)
 
         # Query database for username
-        user = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+        cur1.execute("SELECT * FROM users WHERE username = ?", (request.form.get("username"),))
 
         # Checks to see if the username exists
-        if len(user) == 1:
-            return apology("username already exists", 400)
+        if len(cur1.fetchall()) == 1:
+            message = "Username already exists"
+            return render_template("register.html", message=message)
 
         # Generates a hashed password
         hash_password = generate_password_hash(request.form.get("password"))
-
+        cur1.execute("SELECT * FROM users")
+        total_users = len(cur1.fetchall())
         # Inserts new user into users
-        db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", request.form.get("username"), hash_password)
-
+        cur1.execute("INSERT INTO users (id, username, hash) VALUES(?, ?, ?)", (total_users+1, request.form.get("username"), hash_password))
+        userdata_db.commit()
+        session["user_id"] = total_users + 1
+        session["username"] = request.form.get("username")
         return render_template("index.html")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("register.html")
+        return render_template("register.html", message="")
 
 @app.route("/timeplace", methods=["GET", "POST"])
 def timeplace():
@@ -181,7 +189,7 @@ def timeplace():
             requesttime = datetime.datetime(year, month, day, hour, minute)
             timestamp = datetime.datetime.now()
             cur1.execute("INSERT INTO timeplaces (username, zipcode, country, requesttime, timestamp) VALUES (?, ?, ?, ?, ?)", ("Null", zipcode, nation, requesttime, timestamp))
-            skymap_db.commit()
+            userdata_db.commit()
             return redirect(url_for('skymap'))
         else:
             return render_template("timeplace.html", message=message, months=months, nations=nations, present_month=datetime.datetime.now().strftime('%B'), present_day=int(datetime.datetime.now().strftime('%d')), present_year=datetime.datetime.now().strftime('%Y'), present_hour=datetime.datetime.now().strftime('%H'), present_minute=datetime.datetime.now().strftime('%M'))
