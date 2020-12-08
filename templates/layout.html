@@ -6,6 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, width=device-width">
 
+        <!-- https://fonts.google.com -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap" rel="stylesheet">
 
@@ -28,7 +29,7 @@
     <body>
 
         <div class="container-fluid">
-          <div class="jumbotron">
+          <div class="jumbotron jumbotron-fluid">
               <h1>Interactive Sky Map</h1>
                 <p>A dark sky map calibrated for your location anywhere in the world. </p>
           </div>
@@ -38,9 +39,13 @@
             <h1>Menu</h1>
             <a class="nav-item" href="/">Home</a>
             <a class="nav-item" href="/timeplace">Sky Map</a>
-            <a class="nav-item" href="/login">Sign In</a>
-            <a class="nav-item" href="/logout">Sign Out</a>
-            <a class="nav-item" href="/register">Register</a>
+            {% if session.user_id %}
+                <a class="nav-item" href="/logout">Sign Out</a>
+                <a class="nav-item">{{ session.user_id }}</a>>
+            {% else %}
+                <a class="nav-item" href="/login">Sign In</a>
+                <a class="nav-item" href="/register">Register</a>
+            {% endif %}
         </div>
 
         {% if get_flashed_messages() %}
@@ -62,5 +67,3 @@
     </body>
 
 </html>
-
-<!-- Header (M), Navigation Bar(S), Footer, Background -->

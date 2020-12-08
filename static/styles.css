@@ -2,31 +2,45 @@ body {
     background-color: #000000;
 }
 
-p, label {
-    color: white;
+p, label, .jumbotron, .sidenav a:hover, #skymap-label {
+    color: #ffffff;
 }
 
 #skymap-label {
     text-align: right;
-    color: white;
+    top: 140px;
+    right: 30px;
+    float: right;
+    position: absolute;
 }
 
 .jumbotron {
     background-color: #070b34;
-    margin-left: 140px;
     padding: 15px;
+    float: right;
+    right: -18px;
     width: 100%;
+    position: absolute;
     text-align: center;
-    color: white;
 }
 
-.skymap {
-    max-width:100%;
-    max-height:100%;
+.skymap, .cat{
+    max-width:80%;
+    max-height:80%;
+    top: 10rem;
+    z-index: -5;
+    position: absolute;
 }
 
-form, footer {
+footer {
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+}
+
+form, footer, .cat{
     padding-left: 20%;
+    padding-top: 20%;
 }
 
 .text-muted {
@@ -60,10 +74,6 @@ form, footer {
 .sidenav a {
     font-size: 20px;
     color: #00bc8c;
-}
-
-.sidenav a:hover {
-    color: #f1f1f1;
 }
 
 .main {

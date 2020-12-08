@@ -20,7 +20,7 @@ from math import modf
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
 
-from helpers import apology, login_required, locator, draw_template, draw_constellations, plot_vision, plot_moon
+from helpers import apology, login_required, locator, draw_template, draw_constellations, draw_vision, draw_moon
 
 
 
@@ -85,7 +85,7 @@ def login():
 
         # Redirect user to home page
         # return redirect("/")
-        return render_template("index.html")
+        return redirect("/timeplace")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -177,8 +177,10 @@ def timeplace():
         elif year > 2040:
             message = "Date must be before December 31st, 2039"
         if message == "":
-            timestamp = datetime.datetime(year, month, day, hour, minute)
-            cur1.execute("INSERT INTO timeplaces (username, zipcode, country, timestamp) VALUES (?, ?, ?, ?)", ("Null", zipcode, nation, timestamp))
+            # Store both the time to be used on sky map and time request is made
+            requesttime = datetime.datetime(year, month, day, hour, minute)
+            timestamp = datetime.datetime.now()
+            cur1.execute("INSERT INTO timeplaces (username, zipcode, country, requesttime, timestamp) VALUES (?, ?, ?, ?, ?)", ("Null", zipcode, nation, requesttime, timestamp))
             skymap_db.commit()
             return redirect(url_for('skymap'))
         else:
@@ -198,14 +200,15 @@ def skymap_png():
         matplotlib.pyplot.style.use('dark_background')
         fig, ax = draw_template()
         draw_constellations(ax)
-        plot_vision(ax, input_time, input_loc)
-        plot_moon(ax, input_time, input_loc)
+        draw_vision(ax, input_time, input_loc)
+        draw_moon(ax, input_time, input_loc)
         output = io.BytesIO()
         FigureCanvasAgg(fig).print_png(output)
         return Response(output.getvalue(), mimetype="image/png")
 
 @app.route("/skymap")
 def skymap():
+    # Renders skymap labeled with location and time
     for item in cur1.execute("SELECT * FROM timeplaces ORDER BY timestamp DESC LIMIT 1"):
         lat = round(float(locator(item[1], item[2])["lat"]), 3)
         lon = round(float(locator(item[1], item[2])["lon"]), 3)
@@ -213,20 +216,3 @@ def skymap():
         country = item[2]
         time = item[3][0:-3]
         return render_template("skymap.html", lat=lat, lon=lon, zipcode=zipcode, country=country, time=time)
-
-
-#testing git commit
-
-#layout deadline: 11/27 end of day
-
-#pages for different constellations (redirected from homepage) 11/28 (both work on it)
-
-#sign in page (M) 11/30
-
-#register (M) 11/30
-
-#form for user to input location, time, etc. (S) 11/30
-
-#
-
-#due 11/30
