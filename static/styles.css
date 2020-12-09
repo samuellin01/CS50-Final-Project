@@ -2,7 +2,7 @@ body {
     background-color: #000000;
 }
 
-p, label, .jumbotron, .sidenav a:hover, #skymap-label {
+h1, p, label, .jumbotron, .sidenav a:hover, #skymap-label {
     color: #ffffff;
 }
 
@@ -38,7 +38,7 @@ footer {
     bottom: 20px;
 }
 
-form, footer, .cat{
+form, footer, .cat, table {
     padding-left: 20%;
     padding-top: 20%;
 }

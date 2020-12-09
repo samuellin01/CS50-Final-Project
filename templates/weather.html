@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Weather
+{% endblock %}
+
+
+{% block main %}
+
+<form>
+  <h1>Weather in current local time (for locations in search history)</h1>
+    <table class="table table-bordered table-hover table-striped table-dark">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Location Name</th>
+            <th scope="col">Zipcode</th>
+            <th scope="col">Country</th>
+            <th scope="col">Weather</th>
+            <th scope="col">Temperature</th>
+            <th scope="col">Feels Like</th>
+            <th scope="col">Wind Speed</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for i in range(length) %}
+          <tr>
+            <td>{{ weather[i]["name"]}}</td>
+            <td>{{ search_history[i][0] }}</td>
+            <td>{{ search_history[i][1] }}</td>
+            <td>{{ weather[i]["weather"][0]["description"] }}</td>
+            <td>{{ weather[i]["main"]["temp"] }} °F</td>
+            <td>{{ weather[i]["main"]["feels_like"] }} °F</td>
+            <td>{{ weather[i]["wind"]["speed"] }} mph</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <p>Current local time: {{ current_time }}</p>
+</form>
+
+{% endblock %}

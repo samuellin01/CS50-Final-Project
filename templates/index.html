@@ -2,11 +2,32 @@
 
 {% block title %}
     Index
-{% endblock %}
+{% endblock %}zipcode, country, requesttime, timestamp
 
 {% block main %}
-<form action="/">
-    <h2> To Do (homepage) </h2>
+
+<form>
+  <h1>Search History</h1>
+    <table class="table table-bordered table-hover table-striped table-dark">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Zipcode</th>
+            <th scope="col">Country</th>
+            <th scope="col">Skymap Time</th>
+            <th scope="col">Request Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in search_history %}
+          <tr>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3][0:16] }}</td>
+            <td>{{ item[4][0:16] }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
 </form>
 
 {% endblock %}

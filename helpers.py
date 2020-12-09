@@ -15,21 +15,6 @@ constellations_db = sqlite3.connect("constellations.db", check_same_thread=False
 s = stars_db.cursor()
 c = constellations_db.cursor()
 
-def apology(message, code=400):
-    """Render message as an apology to user."""
-    def escape(s):
-        """
-        Escape special characters.
-
-        https://github.com/jacebrowning/memegen#special-characters
-        """
-        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
-                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
-            s = s.replace(old, new)
-        return s
-    return render_template("apology.html", top=code, bottom=escape(message)), code
-
-
 def login_required(f):
     """
     Decorate routes to require login.
@@ -69,10 +54,10 @@ def draw_template():
         line.set_linewidth(0.2)
     
     # Hide unnecessary tick labels
-    for yticklabel in ax.get_yticklabels():
-        yticklabel.set_visible(False)
-    for xticklabel in ax.get_xticklabels():
-        xticklabel.set_visible(False)
+    for ylabel in ax.get_yticklabels():
+        ylabel.set_visible(False)
+    for xlabel in ax.get_xticklabels():
+        xlabel.set_visible(False)
     return fig,ax
 
 # Draw constellations onto skymap using data from stars.db and constellations.db
@@ -138,9 +123,7 @@ def draw_vision(ax, input_time, input_loc):
     ax.plot(curved_ax.ra.radian, -curved_ax.dec.value+45, '-', linewidth=0.5, color='turquoise')
 
     # Draw straight axis
-    straight_alt = [0, 0]
-    straight_az = [0, 180]
-    straight_ax = SkyCoord(straight_az, straight_alt, unit='deg', frame='altaz', obstime=input_time, location=input_loc )
+    straight_ax = SkyCoord([0, 180], [0, 0], unit='deg', frame='altaz', obstime=input_time, location=input_loc )
     straight_ax = straight_ax.transform_to('icrs')
     ax.plot(straight_ax.ra.radian, -straight_ax.dec.value+45, '-', linewidth=0.5, color='turquoise')
 

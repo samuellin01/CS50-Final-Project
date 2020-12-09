@@ -6,6 +6,7 @@ import matplotlib.pyplot
 import astropy.time
 import astropy.units as units
 import sqlite3
+import requests, json
  
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, Response, url_for
@@ -20,7 +21,7 @@ from math import modf
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
 
-from helpers import apology, login_required, locator, draw_template, draw_constellations, draw_vision, draw_moon
+from helpers import login_required, locator, draw_template, draw_constellations, draw_vision, draw_moon
 
 
 
@@ -52,7 +53,9 @@ cur1 = userdata_db.cursor()
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    cur1.execute("SELECT * FROM timeplaces WHERE username = ? ORDER BY timestamp", (session["username"],))
+    search_history = cur1.fetchall()
+    return render_template("index.html", search_history=search_history)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -86,7 +89,7 @@ def login():
         session["username"] = matches[0][1]
         # Redirect user to home page
         # return redirect("/")
-        return redirect("/timeplace")
+        return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -151,7 +154,32 @@ def register():
     else:
         return render_template("register.html", message="")
 
+# Uses OpenWeatherMap to provide current weather for locations in search history
+@app.route("/weather")
+@login_required
+def weather():
+    API_endpoint = "http://api.openweathermap.org/data/2.5/weather?"
+    join_1 = "&appid="
+    API_key = "f85761c7a2fc0e62714200e820d3f3d6"
+    cur1.execute("SELECT DISTINCT zipcode, country FROM timeplaces WHERE username = ? ORDER BY timestamp", (session["username"],))
+    search_history = cur1.fetchall()
+    weather = []
+    current_time = datetime.datetime.now()
+    for location in search_history:
+        # Retrieve JSON data by generating API url based on lat/lon
+        lat = float(locator(location[0], location[1])["lat"])
+        lon = float(locator(location[0], location[1])["lon"])
+        current_weather_lat_lon = "lat=" + str(round(lat,2)) + "&lon=" + str(round(lon,2))
+        units = "&units=imperial"
+        current_coord_weather_url = API_endpoint + current_weather_lat_lon + join_1 + API_key + units
+        # Convert JSON data into Python dict type, and store it in weather[] list
+        json_data = requests.get(current_coord_weather_url).json()
+        weather_data = json.loads(json.dumps(json_data))
+        weather.append(weather_data)
+    return render_template("weather.html", length=len(search_history), search_history=search_history, weather=weather, current_time=current_time)
+
 @app.route("/timeplace", methods=["GET", "POST"])
+@login_required
 def timeplace():
     months = []
     nations = []
@@ -188,7 +216,7 @@ def timeplace():
             # Store both the time to be used on sky map and time request is made
             requesttime = datetime.datetime(year, month, day, hour, minute)
             timestamp = datetime.datetime.now()
-            cur1.execute("INSERT INTO timeplaces (username, zipcode, country, requesttime, timestamp) VALUES (?, ?, ?, ?, ?)", ("Null", zipcode, nation, requesttime, timestamp))
+            cur1.execute("INSERT INTO timeplaces (username, zipcode, country, requesttime, timestamp) VALUES (?, ?, ?, ?, ?)", (session["username"], zipcode, nation, requesttime, timestamp))
             userdata_db.commit()
             return redirect(url_for('skymap'))
         else:
@@ -215,6 +243,7 @@ def skymap_png():
         return Response(output.getvalue(), mimetype="image/png")
 
 @app.route("/skymap")
+@login_required
 def skymap():
     # Renders skymap labeled with location and time
     for item in cur1.execute("SELECT * FROM timeplaces ORDER BY timestamp DESC LIMIT 1"):
