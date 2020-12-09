@@ -88,44 +88,36 @@ def draw_constellations(ax):
 
 # Draw area of skymap that observer can see
 def draw_vision(ax, input_time, input_loc):
-    # Convert coordinates to altitude-azimuth coordinates
+    # Convert coordinates to altitude-azimuth coordinates and to right-ascension/declination coordinates
     azimuth = numpy.arange(0, 360.1, 1)
     altitude = numpy.zeros(len(azimuth))
-    vision = SkyCoord(azimuth, altitude, unit='deg', frame='altaz', obstime=input_time, location=input_loc)
+    vision = SkyCoord(azimuth, altitude, unit='deg', frame='altaz', obstime=input_time, location=input_loc).transform_to('icrs')
     
-    # Convert altitude-azimuth coordinates to right-ascension/declination coordinates
-    vision = vision.transform_to('icrs')
     # Plot RA and DEC coordinates
     ax.plot(vision.ra.radian, -vision.dec.value+45, '-', linewidth=0.3, color='darkblue')
     
     # Fill in outside circle
-    common_border = vision.ra.radian
-    vision_circle = -vision.dec.value+45
-    outside_circle = len(vision_circle) * [90]
-    ax.fill_between(common_border, vision_circle, outside_circle, where=outside_circle>=vision_circle, facecolor='skyblue', alpha=0.8 )
-    
-    # Label North, South, East, West
-    vision_circle_deg = SkyCoord(numpy.arange(0, 345.1, 15), numpy.zeros(len(numpy.arange(0, 345.1, 15))), unit='deg', frame='altaz', obstime=input_time, location=input_loc )
-    vision_circle_deg = vision_circle_deg.transform_to('icrs')
-    directions = ['N', 'E', 'S', 'W']
-    counter = 0
-    for (coordinate, label) in zip(vision_circle_deg, numpy.arange(0, 345.1, 15)):
-        if int(label) % 90 == 0:
-            ax.text(coordinate.ra.radian, -coordinate.dec.value+45, directions[counter], fontsize=10, fontname="serif", fontweight='bold' )
-            counter += 1
+    ax.fill_between(vision.ra.radian, -vision.dec.value+45, len(-vision.dec.value+45) * [90], where=len(-vision.dec.value+45) * [90]>=-vision.dec.value+45, facecolor='skyblue', alpha=0.8 )
 
     # Draw curved axis
     curved_alt = [num for num in numpy.arange(0, 90.1, 1)]
     curved_az = len(curved_alt)*[90] + (len(curved_alt)-1)*[270]
     curved_alt = curved_alt + curved_alt[:-1][::-1]
-    curved_ax = SkyCoord (curved_az, curved_alt, unit='deg', frame='altaz', obstime=input_time, location=input_loc )
-    curved_ax = curved_ax.transform_to('icrs')
+    curved_ax = SkyCoord(curved_az, curved_alt, unit='deg', frame='altaz', obstime=input_time, location=input_loc).transform_to('icrs')
     ax.plot(curved_ax.ra.radian, -curved_ax.dec.value+45, '-', linewidth=0.5, color='turquoise')
 
     # Draw straight axis
-    straight_ax = SkyCoord([0, 180], [0, 0], unit='deg', frame='altaz', obstime=input_time, location=input_loc )
-    straight_ax = straight_ax.transform_to('icrs')
+    straight_ax = SkyCoord([0, 180], [0, 0], unit='deg', frame='altaz', obstime=input_time, location=input_loc).transform_to('icrs')
     ax.plot(straight_ax.ra.radian, -straight_ax.dec.value+45, '-', linewidth=0.5, color='turquoise')
+
+    # Label North, South, East, West
+    directions = ['N', 'E', 'S', 'W']
+    counter = 0
+    vision_circle_deg = SkyCoord(numpy.arange(0, 345.1, 15), numpy.zeros(len(numpy.arange(0, 345.1, 15))), unit='deg', frame='altaz', obstime=input_time, location=input_loc ).transform_to('icrs')
+    for (coordinate, label) in zip(vision_circle_deg, numpy.arange(0, 345.1, 15)):
+        if int(label) % 90 == 0:
+            ax.text(coordinate.ra.radian, -coordinate.dec.value+45, directions[counter], fontsize=10, fontname="serif", fontweight='bold' )
+            counter += 1
 
 # Draw location of moon at input time
 def draw_moon(ax, input_time, input_loc):

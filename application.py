@@ -24,7 +24,6 @@ from matplotlib.figure import Figure
 from helpers import login_required, locator, draw_template, draw_constellations, draw_vision, draw_moon
 
 
-
 # Configure application
 app = Flask(__name__)
 
