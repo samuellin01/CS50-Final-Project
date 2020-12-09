@@ -3,6 +3,7 @@ import urllib.parse
 import sqlite3
 import matplotlib.pyplot as plt
 import numpy
+import logging
 
 from flask import redirect, render_template, request, session
 from functools import wraps
@@ -10,6 +11,12 @@ from geopy.geocoders import Nominatim
 from iso3166 import countries
 from astropy.coordinates import SkyCoord, get_moon
 
+# Turn off matplotlib debug log messages
+logging.basicConfig()
+mpl_logger = logging.getLogger('matplotlib')
+mpl_logger.setLevel(logging.WARNING)
+
+# Initialize stars and constellations SQL databases
 stars_db = sqlite3.connect("stars.db", check_same_thread=False)
 constellations_db = sqlite3.connect("constellations.db", check_same_thread=False)
 s = stars_db.cursor()
@@ -46,18 +53,19 @@ def draw_template():
     ax.set_theta_zero_location('N')
     ax.set_theta_direction(-1)  
 
+    # Hide unnecessary tick labels
+    for xlabel in ax.get_xticklabels():
+        xlabel.set_visible(False)
+    for ylabel in ax.get_yticklabels():
+        ylabel.set_visible(False)
+    
     # Draw inner gridlines
     ax.grid(True)
     gridlines = ax.get_xgridlines() + ax.get_ygridlines()
     for line in gridlines:
-        line.set_linestyle(':')
         line.set_linewidth(0.2)
+        line.set_linestyle(':')
     
-    # Hide unnecessary tick labels
-    for ylabel in ax.get_yticklabels():
-        ylabel.set_visible(False)
-    for xlabel in ax.get_xticklabels():
-        xlabel.set_visible(False)
     return fig,ax
 
 # Draw constellations onto skymap using data from stars.db and constellations.db
