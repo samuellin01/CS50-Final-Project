@@ -92,7 +92,7 @@ def draw_constellations(ax):
                 ax.plot(numpy.radians([ras[0], ras[1]]), [-1 * decs[0]+45, -1 * decs[1] + 45], linewidth=1.0, color='skyblue')
                 # Add label with constellation name next to first star 
                 if i == 0:
-                    ax.text(numpy.radians(ras[0]), -1 * decs[0]+45, "{}".format(constellation), fontsize=4, weight='bold')
+                    ax.text(numpy.radians(ras[0]), -1 * decs[0]+45, str(format(constellation)), fontsize=4, weight='bold')
 
 # Draw area of skymap that observer can see
 def draw_vision(ax, input_time, input_loc):
@@ -131,4 +131,4 @@ def draw_vision(ax, input_time, input_loc):
 def draw_moon(ax, input_time, input_loc):
     moon = get_moon(input_time, location=input_loc)
     moon = SkyCoord(moon.ra, moon.dec, frame='gcrs').transform_to('icrs')
-    ax.plot([moon.ra.radian], [-moon.dec.value+45], color='yellow', linestyle='', marker='$🌛$')
+    ax.plot([moon.ra.radian], [-moon.dec.value+45], color='yellow', linestyle='', marker='o')
