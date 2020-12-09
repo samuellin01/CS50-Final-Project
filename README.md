@@ -19,9 +19,9 @@ To commit changes to the repository:
 5) Run `git push`
 6) Go to github online and check if it actually worked.
 
-If it says `ModuleNotFoundError: No module named ...`, run `pip install -r requirements.txt`
+If it says `ModuleNotFoundError: No module named ...`, run `pip install -r requirements.txt`(or pip3)
 
-To run Flask on your local IDE:
+To run Flask on your local terminal:
 1) Run `export FLASK_APP=application`
 2) Run `export FLASK_ENV=development`
 3) Run `flask run`
