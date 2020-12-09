@@ -33,9 +33,10 @@ h1, p, label, .jumbotron, .sidenav a:hover, #skymap-label {
 }
 
 footer {
-    position: absolute;
+    position: fixed;
     right: 10px;
     bottom: 20px;
+    z-index: -5;
 }
 
 form, footer, .cat, table {
