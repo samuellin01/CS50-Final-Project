@@ -50,8 +50,8 @@ def draw_template():
     # Basic configurations
     fig = plt.figure(dpi=500)
     ax = fig.add_axes([0, 0, 1, 1], polar=True)
-    ax.set_theta_zero_location('N')
     ax.set_theta_direction(-1)  
+    ax.set_theta_zero_location('N')
 
     # Hide unnecessary tick labels
     for xlabel in ax.get_xticklabels():
@@ -64,7 +64,7 @@ def draw_template():
     gridlines = ax.get_xgridlines() + ax.get_ygridlines()
     for line in gridlines:
         line.set_linewidth(0.2)
-        line.set_linestyle(':')
+        line.set_linestyle('-')
     
     return fig,ax
 
@@ -129,6 +129,6 @@ def draw_vision(ax, input_time, input_loc):
 
 # Draw location of moon at input time
 def draw_moon(ax, input_time, input_loc):
-    moon = get_moon(input_time, location=input_loc)
+    moon = get_moon(time=input_time, location=input_loc)
     moon = SkyCoord(moon.ra, moon.dec, frame='gcrs').transform_to('icrs')
     ax.plot([moon.ra.radian], [-moon.dec.value+45], color='yellow', linestyle='', marker='o')
