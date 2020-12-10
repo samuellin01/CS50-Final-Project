@@ -1,3 +1,5 @@
+Link to Youtube video: https://youtu.be/2tBjOh42LVc 
+
 File Organization:
 
 Our final project is a Flask application. Its components include various Python, HTML, CSS, and SQL files, organized such that the HTML files are located in a templates folder with the index.html as the homepage with the search history and the rest of the HTML corresponding to their function. We also have a static folder containing the CSS file and an image for our favicon.
