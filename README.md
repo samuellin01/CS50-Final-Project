@@ -4,7 +4,7 @@ Our final project is a Flask application. Its components include various Python,
 
 Before running the Flask application:
 
-First, download and unzip the folder titled CS50-Final-Project. Our flask application can be executed either in a computer’s terminal, or in CS50 IDE. Regardless of which method is used, a user must have already navigated to the location of CS50-Final-Project on their computer’s directory. Once this is done, run the following command:
+First, download and unzip the folder titled CS50-Final-Project-main. Our flask application can be executed either in a computer’s terminal, or in CS50 IDE. Regardless of which method is used, a user must have already navigated to the location of CS50-Final-Project-main on their computer’s directory. Once this is done, run the following command:
 `> pip install -r requirements`
 If this command returns an error, it is probably because the computer has a different version of pip installed. Run the following command instead:
 `> pip3 install -r requirements`
