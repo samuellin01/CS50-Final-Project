@@ -5,27 +5,27 @@ Our final project is a Flask application. Its components include various Python,
 Before running the Flask application:
 
 First, download and unzip the folder titled CS50-Final-Project. Our flask application can be executed either in a computer’s terminal, or in CS50 IDE. Regardless of which method is used, a user must have already navigated to the location of CS50-Final-Project on their computer’s directory. Once this is done, run the following command:
-> pip install -r requirements
+`> pip install -r requirements`
 If this command returns an error, it is probably because the computer has a different version of pip installed. Run the following command instead:
-> pip3 install -r requirements
+`> pip3 install -r requirements`
 This should install all of the necessary modules needed to run the program. It is best to do this with an Internet connection.
 
 
 Running the Flask application:
 
 To run the Flask application on Unix Bash (Linux, Mac, etc.), type the following commands:
-$ export FLASK_APP=application
-$ flask run
+`$ export FLASK_APP=application`
+`$ flask run`
 To run the Flask application on Windows CMD, type the following commands:
-> set FLASK_APP=application
-> flask run
+`> set FLASK_APP=application`
+`> flask run`
 To run the Flask application on Windows Powershell, type the following commands:
-> $env:FLASK_APP = "application"
-> flask run
+`> $env:FLASK_APP = "application"`
+`> flask run`
 To run the Flask application on CS50 IDE, type the following command:
-> flask run
+`> flask run`
 The flask application should run properly at this point. Something similar to this should appear:
-$ flask run
+`$ flask run
  * Serving Flask app "application"
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 The flask application can then be run on any browser (although Google Chrome works most reliably) by typing in the above address into the browser’s address bar. 
