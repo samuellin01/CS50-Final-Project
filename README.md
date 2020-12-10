@@ -25,9 +25,9 @@ To run the Flask application on Windows Powershell, type the following commands:
 To run the Flask application on CS50 IDE, type the following command:
 `> flask run`
 The flask application should run properly at this point. Something similar to this should appear:
-`$ flask run
- * Serving Flask app "application"
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+`$ flask run`
+ `* Serving Flask app "application"`
+ `* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)`
 The flask application can then be run on any browser (although Google Chrome works most reliably) by typing in the above address into the browser’s address bar. 
 
 
