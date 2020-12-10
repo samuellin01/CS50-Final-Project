@@ -170,6 +170,7 @@ def register():
         return render_template("register.html", message="")
 
 # Uses OpenWeatherMap to provide current weather for locations in search history
+# Learned to write this function from documentation in https://openweathermap.org/current
 @app.route("/weather")
 @login_required
 def weather():
@@ -238,6 +239,7 @@ def timeplace():
             return render_template("timeplace.html", message=message, months=months, nations=nations, present_month=datetime.datetime.now().strftime('%B'), present_day=int(datetime.datetime.now().strftime('%d')), present_year=datetime.datetime.now().strftime('%Y'), present_hour=datetime.datetime.now().strftime('%H'), present_minute=datetime.datetime.now().strftime('%M'))
 
 # Called only from /skymap route to generate skymap image using matplotlib
+# Found useful information on https://stackoverflow.com/questions/50728328/python-how-to-show-matplotlib-in-flask
 @app.route("/skymap.png")
 def skymap_png():
     # Find latest timeplace request from user
@@ -325,6 +327,7 @@ def draw_constellations(ax):
                     ax.text(numpy.radians(ras[0]), -1 * decs[0]+45, str(format(constellation)), fontsize=4, weight='bold')
 
 # Draw area of skymap that observer can see
+# Found useful documentation on https://matplotlib.org/3.3.3/users/whats_new.html#what-s-new-in-matplotlib-3-3-0 
 def draw_vision(ax, input_time, input_loc):
     # Convert coordinates to altitude-azimuth coordinates and to right-ascension/declination coordinates
     azimuth = numpy.arange(0, 360.1, 1)
